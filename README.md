@@ -5,11 +5,15 @@ A Sourcemod plugin module for Kento RankMe to display players' rank using faceit
 
 ## Description ##
 Plugin module for Kento-RankMe that allows to display faceit styled ranks based on the ranks calculated by Kento's RankMe.
-[![Foo](https://i.ibb.co/mJTR39w/20201207153138-1.jpg)]()
+[![Screenshot](https://i.ibb.co/mJTR39w/20201207153138-1.jpg)]()
 
 ## Requirements ##
 - Sourcemod and Metamod
 - [RankMe Kento edition](https://forums.alliedmods.net/showthread.php?t=290063)
+- A FastDL server.
+
+## Tutorial ##
+[How to setup a FASTDL on a CSGO Server](https://www.youtube.com/watch?v=a77mZKlDoic)
 
 ## Installation ##
 1. Download the files from the latest release.
