@@ -2,6 +2,7 @@
 #include <sdkhooks>
 #include <sdktools>
 #include <rankme>
+#include <lvl_ranks>
 
 #pragma newdecls required
 #pragma semicolon 1
@@ -39,8 +40,12 @@ ConVar
 	g_FaceitLevelRank9,
 	g_FaceitLevelRank10,
 	g_FaceitLevelRoundReload,
-	g_FaceitLevelFFAMode;
+	g_FaceitLevelFFAMode,
+	g_FaceitLevelBackend;
 
+bool
+	bRankMe = true,
+	bLevelRank = false;
 
 public void OnPluginStart()
 {
@@ -59,6 +64,7 @@ public void OnPluginStart()
 	g_FaceitLevelRank10 = CreateConVar("sm_faceit_level_rank_10", "2000", "Minimum amounts of points for a player to be level 1.", 0, true, 0.0);
 	g_FaceitLevelRoundReload = CreateConVar("sm_faceit_level_round_reload", "0", "1 to reload the ranks every round, 0 to only reload them on map start", 0, true, 0.0, true, 1.0);
 	g_FaceitLevelFFAMode = CreateConVar("sm_faceit_level_ffa_mode", "0", "1 to enable ffa mode, player rank is reloaded every death, 0 to reload everyround.", 0, true, 0.0, true, 1.0);
+	g_FaceitLevelBackend = CreateConVar("sm_faceit_level_backend", "rankme", "Which backend to use. Current options are: 'rankme' or 'level-rank' without the ''.");
 
 	HookConVarChange(g_FaceitLevelRank1, ReloadSkillLevelsMins_ConvarChange);
 	HookConVarChange(g_FaceitLevelRank2, ReloadSkillLevelsMins_ConvarChange);
@@ -75,13 +81,29 @@ public void OnPluginStart()
 
 	m_nPersonaDataPublicLevel = FindSendPropInfo("CCSPlayerResource", "m_nPersonaDataPublicLevel");
 	
+	char szBuffer[64];
+	GetConVarString(g_FaceitLevelBackend, szBuffer, sizeof(szBuffer));
+	if (StrEqual(szBuffer, "level-rank", false))
+	{
+		bRankMe = false;
+		bLevelRank = true;
+		PrintToServer("Now using Level-Rank");
+	}
+	else
+	{
+		bRankMe = true;
+		bLevelRank = false;
+		PrintToServer("Now using RankMe");
+	}
+
 	ReloadSkillLevelsMins();
 	for(int i=1; i<MAXPLAYERS+1; i++)
 	{
-		if(IsValidClient(i)&&RankMe_IsPlayerLoaded(i))
-			RefreshSkillLevel(i);
+		if(bRankMe)
+			RefreshSkillLevels(i);
+		else if(bLevelRank)
+			RefreshSkillLevels(i);
 	}
-	
 }
 
 public Action OnPlayerDeath(Handle event, const char[] name, bool dontBroadcast)
@@ -89,7 +111,7 @@ public Action OnPlayerDeath(Handle event, const char[] name, bool dontBroadcast)
 	int iUserID = GetEventInt(event, "userid"), iClient;
 	iClient = GetClientOfUserId(iUserID);
 	if(GetConVarBool(g_FaceitLevelFFAMode) && IsValidClient(iClient))
-		RefreshSkillLevel(iClient);
+		RefreshSkillLevels(iClient);
 	return Plugin_Continue;
 }
 
@@ -98,6 +120,7 @@ public void ReloadSkillLevelsMins_ConvarChange(ConVar convar, const char[] oldVa
 {
 	ReloadSkillLevelsMins();
 }
+
 
 public void ReloadSkillLevelsMins()
 {
@@ -121,10 +144,7 @@ public Action OnRoundEnd(Handle event, const char[] name, bool dontBroadcast)
 	{
 		for(int i=0; i<MAXPLAYERS+1; i++)
 		{
-			if(IsValidClient(i) && RankMe_IsPlayerLoaded(i))
-			{
-				RefreshSkillLevel(i);
-			}
+			RefreshSkillLevels(i);
 		}
 	}
 	return Plugin_Continue;
@@ -146,14 +166,26 @@ public void OnMapStart()
 
 public Action RankMe_OnPlayerLoaded(int iClient)
 {
-	RequestFrame(RefreshSkillLevel, iClient);
+	RequestFrame(RefreshSkillLevels, iClient);
 }
 
 
-public void RefreshSkillLevel(int iClient)
+public void RefreshSkillLevels(int iClient)
 {
-	int iPoints = RankMe_GetPoints(iClient);
+	int iPoints = 0;
+	if(bRankMe)
+	{
+		if(IsValidClient(iClient)&&RankMe_IsPlayerLoaded(iClient))
+			iPoints = RankMe_GetPoints(iClient);
+	}
+	else if(bLevelRank)
+	{
+		if(IsValidClient(iClient)&&LR_GetClientStatus(iClient))
+			iPoints = LR_GetClientInfo(iClient, ST_EXP);
+	}
+
 	g_Players[iClient].iPoints = iPoints;
+
 	for(int i=9; i>=0; i--)
 	{
 		if(g_Players[iClient].iPoints >= g_iFaceitLevelsMins[i])
