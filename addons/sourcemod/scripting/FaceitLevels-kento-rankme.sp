@@ -2,6 +2,7 @@
 #include <sdkhooks>
 #include <sdktools>
 #include <rankme>
+#undef REQUIRE_PLUGIN
 #include <lvl_ranks>
 
 #pragma newdecls required
