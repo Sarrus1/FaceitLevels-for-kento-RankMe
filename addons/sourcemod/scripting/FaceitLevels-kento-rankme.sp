@@ -54,15 +54,15 @@ public void OnPluginStart()
 	HookEvent("player_death", OnPlayerDeath, EventHookMode_Post);
 
 	g_FaceitLevelRank1 = CreateConVar("sm_faceit_level_rank_1", "0", "Minimum amounts of points for a player to be level 1.", 0, true, 0.0);
-	g_FaceitLevelRank2 = CreateConVar("sm_faceit_level_rank_2", "1200", "Minimum amounts of points for a player to be level 1.", 0, true, 0.0);
-	g_FaceitLevelRank3 = CreateConVar("sm_faceit_level_rank_3", "1300", "Minimum amounts of points for a player to be level 1.", 0, true, 0.0);
-	g_FaceitLevelRank4 = CreateConVar("sm_faceit_level_rank_4", "1400", "Minimum amounts of points for a player to be level 1.", 0, true, 0.0);
-	g_FaceitLevelRank5 = CreateConVar("sm_faceit_level_rank_5", "1500", "Minimum amounts of points for a player to be level 1.", 0, true, 0.0);
-	g_FaceitLevelRank6 = CreateConVar("sm_faceit_level_rank_6", "1600", "Minimum amounts of points for a player to be level 1.", 0, true, 0.0);
-	g_FaceitLevelRank7 = CreateConVar("sm_faceit_level_rank_7", "1700", "Minimum amounts of points for a player to be level 1.", 0, true, 0.0);
-	g_FaceitLevelRank8 = CreateConVar("sm_faceit_level_rank_8", "1800", "Minimum amounts of points for a player to be level 1.", 0, true, 0.0);
-	g_FaceitLevelRank9 = CreateConVar("sm_faceit_level_rank_9", "1900", "Minimum amounts of points for a player to be level 1.", 0, true, 0.0);
-	g_FaceitLevelRank10 = CreateConVar("sm_faceit_level_rank_10", "2000", "Minimum amounts of points for a player to be level 1.", 0, true, 0.0);
+	g_FaceitLevelRank2 = CreateConVar("sm_faceit_level_rank_2", "1200", "Minimum amounts of points for a player to be level 2.", 0, true, 0.0);
+	g_FaceitLevelRank3 = CreateConVar("sm_faceit_level_rank_3", "1300", "Minimum amounts of points for a player to be level 3.", 0, true, 0.0);
+	g_FaceitLevelRank4 = CreateConVar("sm_faceit_level_rank_4", "1400", "Minimum amounts of points for a player to be level 4.", 0, true, 0.0);
+	g_FaceitLevelRank5 = CreateConVar("sm_faceit_level_rank_5", "1500", "Minimum amounts of points for a player to be level 5.", 0, true, 0.0);
+	g_FaceitLevelRank6 = CreateConVar("sm_faceit_level_rank_6", "1600", "Minimum amounts of points for a player to be level 6.", 0, true, 0.0);
+	g_FaceitLevelRank7 = CreateConVar("sm_faceit_level_rank_7", "1700", "Minimum amounts of points for a player to be level 7.", 0, true, 0.0);
+	g_FaceitLevelRank8 = CreateConVar("sm_faceit_level_rank_8", "1800", "Minimum amounts of points for a player to be level 8.", 0, true, 0.0);
+	g_FaceitLevelRank9 = CreateConVar("sm_faceit_level_rank_9", "1900", "Minimum amounts of points for a player to be level 9.", 0, true, 0.0);
+	g_FaceitLevelRank10 = CreateConVar("sm_faceit_level_rank_10", "2000", "Minimum amounts of points for a player to be level 10.", 0, true, 0.0);
 	g_FaceitLevelRoundReload = CreateConVar("sm_faceit_level_round_reload", "0", "1 to reload the ranks every round, 0 to only reload them on map start", 0, true, 0.0, true, 1.0);
 	g_FaceitLevelFFAMode = CreateConVar("sm_faceit_level_ffa_mode", "0", "1 to enable ffa mode, player rank is reloaded every death, 0 to reload everyround.", 0, true, 0.0, true, 1.0);
 	g_FaceitLevelBackend = CreateConVar("sm_faceit_level_backend", "rankme", "Which backend to use. Current options are: 'rankme' or 'level-rank' without the ''.");
