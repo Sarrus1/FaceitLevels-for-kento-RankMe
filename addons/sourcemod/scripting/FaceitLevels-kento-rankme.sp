@@ -187,7 +187,6 @@ public void RefreshSkillLevels(int iClient)
 {
 	if(!IsValidClient(iClient))
 		return;
-	PrintToChat(iClient, "Refreshing your rank...");
 	int iPoints = 0;
 	if(g_bRankMe)
 	{
