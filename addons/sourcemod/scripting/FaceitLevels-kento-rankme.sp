@@ -198,7 +198,6 @@ public void RefreshSkillLevels(int iClient)
 		if(LR_GetClientStatus(iClient))
 		{
 			iPoints = LR_GetClientInfo(iClient, ST_EXP);
-			PrintToConsole(iClient, "Your score is %d", iPoints);
 		}
 	}
 
