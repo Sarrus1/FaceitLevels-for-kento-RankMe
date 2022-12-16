@@ -1,0 +1,35 @@
+name: Test Sourcemod compilation
+
+on:
+  pull_request:
+    branches: main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set environment variables
+        run: echo SCRIPTS_PATH=$(pwd) >> $GITHUB_ENV
+      - name: Setup SourcePawn Compiler ${{ matrix.SM_VERSION }}
+        id: setup_sp
+        uses: rumblefrog/setup-sp@master
+        with:
+          version: "1.11.x"
+          version-file: ./scripting/FaceitLevels-for-kento-RankMe.sp
+
+      - name: Compile plugins
+        run: |
+          cd addons/sourcemod/scripting
+          mkdir ../plugins
+          spcomp -E -w234 -O2 -v2 -i"include" -o"../plugins/FaceitLevels-for-kento-RankMe.smx" FaceitLevels-for-kento-RankMe.sp
+          echo "===OUT FILES==="
+          cd ../plugins
+          ls
+          echo "===VERSION==="
+          echo ${{ steps.setup_sp.outputs.plugin-version }}
+        working-directory: ${{ env.SCRIPTS_PATH }}

@@ -13,7 +13,7 @@ public Plugin myinfo =
 		name = "Faceit Levels For Kento RankMe and Level Ranks",
 		author = "Sarrus",
 		description = "A plugin that gives players faceit levels based on their RankMe or Level Ranks points.",
-		version = "1.1",
+		version = "1.2.0",
 		url = "https://github.com/Sarrus1/"};
 
 enum struct Player
@@ -180,6 +180,7 @@ public void OnMapStart()
 public Action RankMe_OnPlayerLoaded(int iClient)
 {
 	RequestFrame(RefreshSkillLevels, iClient);
+	return Plugin_Continue;
 }
 
 
